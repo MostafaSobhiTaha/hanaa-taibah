@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-bs-theme="light">
+<head>
+    <link rel="icon" type="image/png" href="images/logo.png">
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>هناء طيبة للمنتجات الغذائية | Hanaa Taibah</title>
+    <meta name="description" content="المورد الأول للمواد الغذائية واللحوم الفاخرة للفنادق والقطاعات الحكومية في المملكة العربية السعودية.">
+    <meta name="keywords" content="مواد غذائية, توريد فنادق, لحوم, هناء طيبة, المدينة المنورة">
+    <meta name="author" content="Hanaa Taibah">
+
+    <link id="bootstrap-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #28a745;
+            --navbar-light: rgba(253, 253, 253, 0.95);
+            --navbar-dark: rgba(33, 37, 41, 0.95);
+        }
+
+        /* Default Font (Arabic) */
+        body { font-family: 'Cairo', sans-serif; overflow-x: hidden; transition: background-color 0.3s, color 0.3s; }
+        
+        /* English Font Class */
+        body.lang-en { font-family: 'Poppins', sans-serif; }
+
+        /* --- Dark Mode Custom Overrides --- */
+        [data-bs-theme="dark"] body { background-color: #121212; color: #e0e0e0; }
+        [data-bs-theme="dark"] .bg-light { background-color: #1e1e1e !important; }
+        [data-bs-theme="dark"] .bg-white { background-color: #2c2c2c !important; color: #fff; }
+        [data-bs-theme="dark"] .text-muted { color: #a0a0a0 !important; }
+        [data-bs-theme="dark"] .navbar { background-color: var(--navbar-dark) !important; box-shadow: 0 2px 15px rgba(0,0,0,0.5); }
+        [data-bs-theme="dark"] .nav-link { color: #e0e0e0 !important; }
+        [data-bs-theme="dark"] .nav-link:hover, [data-bs-theme="dark"] .nav-link.active { color: var(--primary-color) !important; }
+        [data-bs-theme="dark"] .card { background-color: #252525; border-color: #444; }
+        [data-bs-theme="dark"] .card .card-title { color: #5dd579 !important; } /* Lighter Green */
+        [data-bs-theme="dark"] .search-input { background-color: #2c2c2c; border-color: #444; color: #fff; }
+        [data-bs-theme="dark"] .search-icon { color: #666; }
+        [data-bs-theme="dark"] .logo-slider { background-color: #1e1e1e; }
+        [data-bs-theme="dark"] .client-logo-slide { filter: grayscale(100%) brightness(0.8); }
+        [data-bs-theme="dark"] .client-logo-slide:hover { filter: grayscale(0) brightness(1); }
+        [data-bs-theme="dark"] .modal-content { background-color: #252525; color: #fff; }
+        [data-bs-theme="dark"] .btn-close { filter: invert(1) grayscale(100%) brightness(200%); }
+        [data-bs-theme="dark"] .img-contain { background-color: #fff; border-radius: 5px; } /* Keep white bg for transparent product pngs */
+
+        /* شاشة التحميل */
+        #preloader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #fff; z-index: 9999;
+            display: flex; justify-content: center; align-items: center; flex-direction: column;
+            transition: opacity 0.5s ease;
+        }
+        [data-bs-theme="dark"] #preloader { background-color: #121212; }
+        
+        .spinner {
+            width: 50px; height: 50px; border: 5px solid rgba(40, 167, 69, 0.3);
+            border-radius: 50%; border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* الناف بار */
+        .navbar {
+            background-color: var(--navbar-light) !important;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+            padding: 15px 0;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.03);
+        }
+        .navbar.scrolled { padding: 10px 0; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        .nav-link { color: #555 !important; transition: color 0.3s; cursor: pointer; }
+        .nav-link:hover, .nav-link.active { color: var(--primary-color) !important; }
+
+        /* أزرار التحكم (اللغة والثيم) */
+        .ctrl-btn {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            border-radius: 50%;
+            width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold;
+            transition: 0.3s;
+            background: transparent;
+            margin: 0 5px;
+        }
+        .ctrl-btn:hover { background: var(--primary-color); color: white; }
+        .lang-btn { border-radius: 20px; width: auto; padding: 0 15px; } /* زر اللغة مستطيل */
+
+        /* الهيرو */
+        .hero-section { position: relative; min-height: 90vh; display: flex; align-items: center; color: white; text-align: center; overflow: hidden; }
+        .hero-carousel { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+        .hero-carousel .carousel-item { height: 100%; transition: transform 1.5s ease-in-out, opacity 1.5s ease-in-out; }
+        .hero-carousel img { width: 100%; height: 100%; object-fit: cover; }
+        .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1; }
+        .hero-content { position: relative; z-index: 2; width: 100%; padding: 20px 0; }
+
+        /* البطاقات */
+        .card { 
+            border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: all 0.3s; height: 100%; overflow: hidden; 
+            cursor: pointer;
+        }
+        .card:hover { box-shadow: 0 8px 25px rgba(0,0,0,0.15); transform: translateY(-5px); }
+        .card-img-top { height: 220px; object-fit: cover; transition: transform 0.5s ease; }
+        .card:hover .card-img-top { transform: scale(1.05); }
+        .img-contain { object-fit: contain; padding: 15px; background-color: #fff; }
+
+        /* أدوات البحث */
+        .search-container { max-width: 500px; margin: 0 auto 30px auto; position: relative; }
+        .search-input { 
+            border-radius: 50px; padding: 12px 25px; border: 2px solid #eee; 
+            width: 100%; transition: all 0.3s; background-color: #fff;
+        }
+        /* RTL/LTR padding handled via JS or specific classes usually, keeping simplified here */
+        html[dir="rtl"] .search-input { padding-left: 45px; }
+        html[dir="rtl"] .search-icon { left: 20px; }
+        html[dir="ltr"] .search-input { padding-right: 45px; }
+        html[dir="ltr"] .search-icon { right: 20px; }
+
+        .search-input:focus { border-color: var(--primary-color); outline: none; box-shadow: 0 0 10px rgba(40,167,69,0.1); }
+        .search-icon { position: absolute; top: 50%; transform: translateY(-50%); color: #ccc; }
+
+        .filter-btn { border-radius: 50px; padding: 8px 25px; border: 2px solid var(--primary-color); color: var(--primary-color); background: transparent; font-weight: 700; transition: all 0.3s; margin: 2px; }
+        .filter-btn:hover, .filter-btn.active { background-color: var(--primary-color); color: white; }
+        
+        .brand-filter-btn { font-size: 0.9rem; border: 1px solid #ccc; color: #666; font-weight: 600; }
+        .brand-filter-btn:hover, .brand-filter-btn.active { background-color: #666; color: white; border-color: #666; }
+        [data-bs-theme="dark"] .brand-filter-btn { color: #ccc; border-color: #555; }
+
+        .empty-state { display: none; text-align: center; padding: 40px; color: #6c757d; }
+
+        /* شريط العملاء */
+        .logo-slider { overflow: hidden; padding: 30px 0; background: white; white-space: nowrap; transition: background 0.3s; }
+        .logo-slide-track { display: inline-block; animation: 40s slide-infinite linear infinite; }
+        .client-logo-slide { height: 80px; width: auto; margin: 0 40px; display: inline-block; vertical-align: middle; filter: grayscale(100%); transition: all 0.3s; opacity: 0.9; }
+        .client-logo-slide:hover { filter: grayscale(0); opacity: 1; transform: scale(1.1); }
+        @keyframes slide-infinite { 0% { transform: translateX(0); } 100% { transform: translateX(50%); } }
+
+        /* الأزرار العائمة */
+        .floating-btn {
+            position: fixed; bottom: 25px; z-index: 1050; width: 60px; height: 60px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.3); text-decoration: none; color: white; font-size: 28px;
+            transition: transform 0.3s;
+        }
+        html[dir="rtl"] .whatsapp-btn { right: 20px; }
+        html[dir="rtl"] .scroll-top-btn { left: 20px; }
+        html[dir="ltr"] .whatsapp-btn { left: 20px; }
+        html[dir="ltr"] .scroll-top-btn { right: 20px; }
+
+        .whatsapp-btn { background-color: #25d366; animation: pulse-green 2s infinite; }
+        .scroll-top-btn { background-color: var(--dark-color); display: none; }
+        
+        @keyframes pulse-green {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+
+        .section-title { position: relative; margin-bottom: 40px; font-weight: 800; color: var(--primary-color); }
+        .navbar-brand img { height: 50px; width: auto; }
+        .certificate-card { cursor: pointer; transition: transform 0.3s; }
+        .certificate-card:hover { transform: translateY(-5px); }
+        .pdf-viewer { width: 100%; height: 500px; border: none; border-radius: 5px; background-color: #f8f9fa; }
+        .map-container { width: 100%; height: 100%; min-height: 400px; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    </style>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WholesaleStore",
+  "name": "Hanaa Taibah",
+  "image": "https://yoursite.com/images/logo.png",
+  "telephone": "+966549367133",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Atbah Bin Bakr St",
+    "addressLocality": "Madinah",
+    "addressCountry": "SA"
+  },
+  "priceRange": "$$"
+}
+</script>
+</head>
+<body>
+
+    <div id="preloader">
+        <div class="spinner mb-3"></div>
+        <h5 class="text-success fw-bold" data-i18n="brand_name">هناء طيبة</h5>
+        <small class="text-muted" data-i18n="loading">جاري التحميل...</small>
+    </div>
+
+    <nav class="navbar navbar-expand-lg sticky-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-success d-flex align-items-center" href="#">
+                <img src="images/logo.png" alt="Logo" class="me-2 ms-2 bg-white rounded p-1">
+                <span data-i18n="brand_name">هناء طيبة</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 fw-bold">
+                    <li class="nav-item"><a class="nav-link active" href="#home" data-i18n="nav_home">الرئيسية</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about" data-i18n="nav_about">من نحن</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#products" data-i18n="nav_products">منتجاتنا</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#certificates" data-i18n="nav_certificates">الشهادات</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#clients" data-i18n="nav_clients">عملاؤنا</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact" data-i18n="nav_contact">تواصل معنا</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-2">
+                    <button class="ctrl-btn" onclick="toggleTheme()" title="تغيير المظهر">
+                        <i class="fas fa-moon" id="themeIcon"></i>
+                    </button>
+                    <button class="ctrl-btn lang-btn" onclick="toggleLanguage()">
+                        <i class="fas fa-globe me-2"></i> <span id="langText">EN</span>
+                    </button>
+                    <a href="#contact" class="btn btn-success rounded-pill px-4 fw-bold shadow-sm d-none d-lg-block" data-i18n="btn_quote">اطلب عرض سعر</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header id="home" class="hero-section">
+        <div id="heroCarousel" class="carousel slide carousel-fade hero-carousel" data-bs-ride="carousel" data-bs-pause="false" data-bs-interval="4000">
+            <div class="carousel-inner h-100">
+                <div class="carousel-item active h-100"><img src="images/hero1.png" alt="Hero 1"></div>
+                <div class="carousel-item h-100"><img src="images/hero2.png" alt="Hero 2"></div>
+                <div class="carousel-item h-100"><img src="images/hero3.png" alt="Hero 3"></div>
+            </div>
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="container hero-content" data-aos="zoom-in" data-aos-duration="1200">
+            <h1 class="display-3 fw-bold mb-3" data-i18n="hero_title">هناء طيبة للمنتجات الغذائية</h1>
+            <h4 class="mb-4" data-i18n="hero_subtitle">شريككم الموثوق في الإمداد الغذائي للفنادق والقطاعات الحكومية</h4>
+            <p class="lead mb-4" data-i18n="hero_desc">نورد أجود اللحوم والمنتجات العالمية وفق أعلى معايير الجودة (ISO 22000 & SFDA)</p>
+            <div>
+                <a href="#products" class="btn btn-success btn-lg mx-1 fw-bold shadow" data-i18n="btn_products">تصفح منتجاتنا</a>
+                <a href="#contact" class="btn btn-outline-light btn-lg mx-1 fw-bold shadow" data-i18n="btn_contact">تواصل معنا</a>
+            </div>
+        </div>
+    </header>
+
+    <section id="about" class="py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6" data-aos="fade-left">
+                    <div class="position-relative text-center">
+                        <img src="images/logo.png" loading="lazy" class="img-fluid rounded shadow-lg" alt="About" style="max-height: 400px; width: 100%; object-fit: cover;">
+                    </div>
+                </div>
+                <div class="col-md-6 mt-5 mt-md-0" data-aos="fade-right">
+                    <h2 class="section-title" data-i18n="about_title">من نحن</h2>
+                    <p class="lead text-muted" data-i18n="about_desc">مؤسسة هناء طيبة، كيان رائد في توريد المواد الغذائية وتوزيعها. نعمل انطلاقاً من المدينة المنورة لنغطي احتياجات كبرى الفنادق والمؤسسات الحكومية في المملكة.</p>
+                    <ul class="list-unstyled mt-3 fs-5">
+                        <li class="mb-2"><i class="fas fa-check-circle text-success mx-2"></i> <span data-i18n="about_pt1">نضارة مضمونة ومحفوظة بعناية.</span></li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success mx-2"></i> <span data-i18n="about_pt2">مطابقة لاشتراطات هيئة الغذاء والدواء.</span></li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success mx-2"></i> <span data-i18n="about_pt3">نكهات أصلية ترضي ذائقة العملاء.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="products" class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <h2 class="section-title" data-i18n="products_title">منتجاتنا</h2>
+                <p class="text-muted mb-4" data-i18n="products_subtitle">تصفح تشكيلتنا الواسعة التي تلبي كافة احتياجات المطابخ التجارية</p>
+
+                <div class="search-container">
+                    <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن اسم المنتج...">
+                    <i class="fas fa-search search-icon"></i>
+                </div>
+
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+                        <div class="filter-btn-group mb-3" id="categoryFilters">
+                            <button class="btn filter-btn active" data-filter="all" data-i18n="filter_all">الكل</button>
+                            <button class="btn filter-btn" data-filter="meat" data-i18n="filter_meat">اللحوم</button>
+                            <button class="btn filter-btn" data-filter="pantry" data-i18n="filter_pantry">المعلبات</button>
+                            <button class="btn filter-btn" data-filter="dairy" data-i18n="filter_dairy">الألبان</button>
+                            <button class="btn filter-btn" data-filter="beverages" data-i18n="filter_beverages">المشروبات</button>
+                        </div>
+                        
+                        <div class="filter-btn-group" id="brandFilters">
+                            <button class="btn filter-btn brand-filter-btn active" data-filter="all" data-i18n="filter_all_brands">كل العلامات</button>
+                            <button class="btn filter-btn brand-filter-btn" data-filter="manara">Manara</button>
+                            <button class="btn filter-btn brand-filter-btn" data-filter="april">April</button>
+                            <button class="btn filter-btn brand-filter-btn" data-filter="rama">Rama</button>
+                            <button class="btn filter-btn brand-filter-btn" data-filter="anchor">Anchor</button>
+                            <button class="btn filter-btn brand-filter-btn" data-filter="royal">Royal</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="noProductsMsg" class="empty-state">
+                <i class="fas fa-search fa-3x mb-3 text-muted"></i>
+                <h5 data-i18n="no_results">عفواً، لا توجد منتجات مطابقة للبحث.</h5>
+            </div>
+
+            <div class="row g-4 product-grid" id="productsContainer">
+                </div>
+        </div>
+    </section>
+
+    <div class="modal fade" id="productModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="modalImg" src="" class="img-fluid rounded mb-3 bg-white p-2" style="max-height: 300px; object-fit: contain;">
+                    <h3 id="modalTitle" class="text-success fw-bold"></h3>
+                    <span id="modalBadge" class="badge bg-secondary mb-3"></span>
+                    <p id="modalDesc" class="text-muted lead fs-6"></p>
+                </div>
+                <div class="modal-footer justify-content-center border-0">
+                    <button class="btn btn-success w-100" id="modalWhatsappBtn">
+                        <i class="fab fa-whatsapp"></i> <span data-i18n="order_via_whatsapp">اطلب هذا المنتج</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section id="certificates" class="py-5">
+        <div class="container text-center">
+            <h2 class="section-title" data-aos="fade-down" data-i18n="cert_title">التزامنا بالجودة</h2>
+            <p class="mb-5" data-aos="fade-up" data-i18n="cert_subtitle">منتجاتنا ومنشآتنا معتمدة من أعلى الجهات الرقابية</p>
+            <div class="row justify-content-center">
+                <div class="col-md-5 mb-4" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="card p-4 h-100 border-success certificate-card" data-bs-toggle="modal" data-bs-target="#isoModal">
+                        <div class="card-body">
+                            <i class="fas fa-certificate fa-3x text-success mb-3"></i>
+                            <h4 class="card-title">ISO 22000:2018</h4>
+                            <p class="card-text" data-i18n="cert_iso_desc">شهادة نظام إدارة سلامة الغذاء المعتمدة عالمياً.</p>
+                            <span class="badge bg-secondary" data-i18n="click_view">اضغط للعرض</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 mb-4" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="card p-4 h-100 border-success certificate-card" data-bs-toggle="modal" data-bs-target="#sfdaModal">
+                        <div class="card-body">
+                            <i class="fas fa-shield-alt fa-3x text-success mb-3"></i>
+                            <h4 class="card-title" data-i18n="cert_sfda_title">الهيئة العامة للغذاء والدواء (SFDA)</h4>
+                            <p class="card-text" data-i18n="cert_sfda_desc">رخصة معتمدة لتوزيع وتخزين المواد الغذائية.</p>
+                            <span class="badge bg-secondary" data-i18n="click_view">اضغط للعرض</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal fade" id="isoModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">ISO 22000</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <iframe src="images/iso-220002018.pdf" class="pdf-viewer"></iframe>
+                    <div class="mt-3 text-center">
+                        <a href="images/iso-220002018.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-success"><i class="fas fa-download"></i> Download / Open</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="sfdaModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">SFDA License</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <iframe src="images/SFDA.pdf" class="pdf-viewer"></iframe>
+                    <div class="mt-3 text-center">
+                        <a href="images/SFDA.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-success"><i class="fas fa-download"></i> Download / Open</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section id="clients" class="py-5 bg-light">
+        <div class="container-fluid">
+            <div class="text-center" data-aos="fade-down">
+                <h2 class="section-title" data-i18n="clients_title">شركاء النجاح</h2>
+                <p class="mb-5" data-i18n="clients_subtitle">نعتز بثقة القطاعات الحكومية وكبرى الفنادق</p>
+            </div>
+            <div class="logo-slider">
+                <div class="logo-slide-track">
+                    <img src="images/Customers/1.png" loading="lazy" class="client-logo-slide" alt="Client">
+                    <img src="images/Customers/2.png" loading="lazy" class="client-logo-slide" alt="Client">
+                    <img src="images/Customers/3.png" loading="lazy" class="client-logo-slide" alt="Client">
+                    <img src="images/Customers/4.jpg" loading="lazy" class="client-logo-slide" alt="Client">
+                    <img src="images/Customers/5.webp" loading="lazy" class="client-logo-slide" alt="Client">
+                    <img src="images/Customers/6.png" loading="lazy" class="client-logo-slide" alt="Client">
+                    <img src="images/Customers/7.jpg" loading="lazy" class="client-logo-slide" alt="Client">
+                    <img src="images/Customers/8.jpg" loading="lazy" class="client-logo-slide" alt="Client">
+                    <img src="images/Customers/9.jpg" loading="lazy" class="client-logo-slide" alt="Client">
+                    <img src="images/Customers/10.png" loading="lazy" class="client-logo-slide" alt="Client">
+                    <img src="images/Customers/11.png" loading="lazy" class="client-logo-slide" alt="Client">
+                    <img src="images/Customers/1.png" loading="lazy" class="client-logo-slide" alt="Client">
+                    <img src="images/Customers/2.png" loading="lazy" class="client-logo-slide" alt="Client">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq" class="py-5">
+        <div class="container" data-aos="fade-up">
+            <h2 class="section-title text-center" data-i18n="faq_title">الأسئلة الشائعة</h2>
+            <div class="accordion" id="faqAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" data-i18n="faq_q1">
+                            ما هي المناطق التي تغطونها بالتوصيل؟
+                        </button>
+                    </h2>
+                    <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body" data-i18n="faq_a1">
+                            نغطي كافة مناطق المملكة عبر أسطول مبرد ومجهز لضمان سلامة الغذاء.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" data-i18n="faq_q2">
+                            هل توفرون عينات للمطاعم والفنادق؟
+                        </button>
+                    </h2>
+                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body" data-i18n="faq_a2">
+                            نعم، يمكننا توفير عينات للمنتجات الرئيسية للتجربة قبل التعاقد.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-5 bg-dark text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 mb-4" data-aos="fade-left">
+                    <h2 class="text-success mb-4" data-i18n="contact_title">تواصل معنا</h2>
+                    <p data-i18n="contact_subtitle">نسعد بتلقي طلباتكم واستفساراتكم.</p>
+                    <div class="mb-3">
+                        <i class="fas fa-user text-success mx-2"></i>
+                        <strong data-i18n="gm_label">المدير العام:</strong> <span data-i18n="gm_name">السيد/ جمال الشيمي</span>
+                    </div>
+                    <div class="mb-3">
+                        <i class="fas fa-map-marker-alt text-success mx-2"></i>
+                        <strong data-i18n="address_label">العنوان:</strong> <span data-i18n="address_val">المدينة المنورة، حي عتبة بن بكر بن عوف الوبرة</span>
+                    </div>
+                    <div class="mb-3">
+                        <i class="fas fa-phone text-success mx-2"></i>
+                        <span dir="ltr">+966 54 936 7133</span>
+                    </div>
+                    <div class="mb-3">
+                        <i class="fas fa-envelope text-success mx-2"></i>
+                        <span>gamal.GM@hanaa-taibah.com</span>
+                    </div>
+
+                    <div class="map-container mt-4" style="border-radius: 15px; overflow: hidden; border: 2px solid #28a745; box-shadow: 0 4px 20px rgba(0,0,0,0.3); height: 250px;">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3629.025758080052!2d39.60856087536107!3d24.553771978130847!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjTCsDMzJzEzLjYiTiAzOcKwMzYnNDAuMSJF!5e0!3m2!1sen!2seg!4v1768494516409!5m2!1sen!2seg" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+                
+                <div class="col-md-6" data-aos="fade-right">
+                    <form id="contactForm" class="bg-white text-dark p-4 rounded shadow">
+                        <h4 class="mb-3" data-i18n="form_title">أرسل استفسارك</h4>
+                        <div class="mb-3">
+                            <label class="form-label" data-i18n="form_name">الاسم</label>
+                            <input type="text" id="name" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" data-i18n="form_company">اسم الجهة / الفندق</label>
+                            <input type="text" id="company" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" data-i18n="form_phone">رقم الجوال</label>
+                            <input type="tel" id="phone" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" data-i18n="form_msg">الرسالة</label>
+                            <textarea id="message" class="form-control" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100 fw-bold">
+                            <span data-i18n="form_send">إرسال عبر واتساب</span> <i class="fab fa-whatsapp mx-2"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-black text-white py-4 text-center">
+        <div class="container">
+            <img src="images/logo.png" loading="lazy" alt="Logo" height="60" class="mb-3 bg-white p-2 rounded">
+            <p class="mb-2" data-i18n="copyright">حقوق النشر © 2025 مؤسسة هناء طيبة للمنتجات الغذائية. جميع الحقوق محفوظة.</p>
+            
+            <div class="social-icons mt-3">
+                <a href="#" class="text-white mx-3 fs-5"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-white mx-3 fs-5"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="text-white fs-5"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/966549367133" class="floating-btn whatsapp-btn" target="_blank" rel="noopener noreferrer">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+    
+    <a href="#" class="floating-btn scroll-top-btn" id="scrollTopBtn">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <script>
+        // ==========================================
+        // 1. Translations Dictionary
+        // ==========================================
+        const translations = {
+            ar: {
+                brand_name: "هناء طيبة",
+                loading: "جاري التحميل...",
+                nav_home: "الرئيسية",
+                nav_about: "من نحن",
+                nav_products: "منتجاتنا",
+                nav_certificates: "الشهادات",
+                nav_clients: "عملاؤنا",
+                nav_contact: "تواصل معنا",
+                btn_quote: "اطلب عرض سعر",
+                hero_title: "هناء طيبة للمنتجات الغذائية",
+                hero_subtitle: "شريككم الموثوق في الإمداد الغذائي للفنادق والقطاعات الحكومية",
+                hero_desc: "نورد أجود اللحوم والمنتجات العالمية وفق أعلى معايير الجودة (ISO 22000 & SFDA)",
+                btn_products: "تصفح منتجاتنا",
+                btn_contact: "تواصل معنا",
+                about_title: "من نحن",
+                about_desc: "مؤسسة هناء طيبة، كيان رائد في توريد المواد الغذائية وتوزيعها. نعمل انطلاقاً من المدينة المنورة لنغطي احتياجات كبرى الفنادق والمؤسسات الحكومية في المملكة.",
+                about_pt1: "نضارة مضمونة ومحفوظة بعناية.",
+                about_pt2: "مطابقة لاشتراطات هيئة الغذاء والدواء.",
+                about_pt3: "نكهات أصلية ترضي ذائقة العملاء.",
+                products_title: "منتجاتنا",
+                products_subtitle: "تصفح تشكيلتنا الواسعة التي تلبي كافة احتياجات المطابخ التجارية",
+                search_placeholder: "ابحث عن اسم المنتج...",
+                filter_all: "الكل",
+                filter_meat: "اللحوم",
+                filter_pantry: "المعلبات",
+                filter_dairy: "الألبان",
+                filter_beverages: "المشروبات",
+                filter_all_brands: "كل العلامات",
+                no_results: "عفواً، لا توجد منتجات مطابقة للبحث.",
+                cert_title: "التزامنا بالجودة",
+                cert_subtitle: "منتجاتنا ومنشآتنا معتمدة من أعلى الجهات الرقابية",
+                cert_iso_desc: "شهادة نظام إدارة سلامة الغذاء المعتمدة عالمياً.",
+                cert_sfda_title: "الهيئة العامة للغذاء والدواء",
+                cert_sfda_desc: "رخصة معتمدة لتوزيع وتخزين المواد الغذائية.",
+                click_view: "اضغط للعرض",
+                clients_title: "شركاء النجاح",
+                clients_subtitle: "نعتز بثقة القطاعات الحكومية وكبرى الفنادق",
+                faq_title: "الأسئلة الشائعة",
+                faq_q1: "ما هي المناطق التي تغطونها بالتوصيل؟",
+                faq_a1: "نغطي كافة مناطق المملكة عبر أسطول مبرد ومجهز لضمان سلامة الغذاء.",
+                faq_q2: "هل توفرون عينات للمطاعم والفنادق؟",
+                faq_a2: "نعم، يمكننا توفير عينات للمنتجات الرئيسية للتجربة قبل التعاقد.",
+                contact_title: "تواصل معنا",
+                contact_subtitle: "نسعد بتلقي طلباتكم واستفساراتكم.",
+                gm_label: "المدير العام:",
+                gm_name: "السيد/ جمال الشيمي",
+                address_label: "العنوان:",
+                address_val: "المدينة المنورة، حي عتبة بن بكر بن عوف الوبرة",
+                form_title: "أرسل استفسارك",
+                form_name: "الاسم",
+                form_company: "اسم الجهة / الفندق",
+                form_phone: "رقم الجوال",
+                form_msg: "الرسالة",
+                form_send: "إرسال عبر واتساب",
+                copyright: "حقوق النشر © 2025 مؤسسة هناء طيبة للمنتجات الغذائية. جميع الحقوق محفوظة.",
+                order_via_whatsapp: "اطلب هذا المنتج",
+                alert_phone: "يرجى إدخال رقم جوال صحيح",
+            },
+            en: {
+                brand_name: "Hanaa Taibah",
+                loading: "Loading...",
+                nav_home: "Home",
+                nav_about: "About Us",
+                nav_products: "Products",
+                nav_certificates: "Certificates",
+                nav_clients: "Clients",
+                nav_contact: "Contact",
+                btn_quote: "Get a Quote",
+                hero_title: "Hanaa Taibah Food Products",
+                hero_subtitle: "Your Trusted Partner in Food Supply for Hotels & Government Sectors",
+                hero_desc: "We supply the finest meats and global products adhering to the highest quality standards (ISO 22000 & SFDA)",
+                btn_products: "View Products",
+                btn_contact: "Contact Us",
+                about_title: "About Us",
+                about_desc: "Hanaa Taibah is a leading entity in food supply and distribution. Operating from Madinah, we cover the needs of major hotels and government institutions across the Kingdom.",
+                about_pt1: "Guaranteed freshness, carefully preserved.",
+                about_pt2: "Compliant with SFDA regulations.",
+                about_pt3: "Authentic flavors that satisfy customers.",
+                products_title: "Our Products",
+                products_subtitle: "Browse our wide range catering to all commercial kitchen needs",
+                search_placeholder: "Search for a product...",
+                filter_all: "All",
+                filter_meat: "Meat",
+                filter_pantry: "Pantry",
+                filter_dairy: "Dairy",
+                filter_beverages: "Beverages",
+                filter_all_brands: "All Brands",
+                no_results: "Sorry, no products match your search.",
+                cert_title: "Commitment to Quality",
+                cert_subtitle: "Our products and facilities are certified by top regulatory bodies",
+                cert_iso_desc: "Globally recognized Food Safety Management System certificate.",
+                cert_sfda_title: "SFDA License",
+                cert_sfda_desc: "Certified license for food distribution and storage.",
+                click_view: "Click to View",
+                clients_title: "Success Partners",
+                clients_subtitle: "We are proud of the trust placed in us by government sectors and major hotels",
+                faq_title: "FAQ",
+                faq_q1: "What areas do you cover for delivery?",
+                faq_a1: "We cover all regions of the Kingdom via a refrigerated fleet equipped to ensure food safety.",
+                faq_q2: "Do you provide samples for hotels?",
+                faq_a2: "Yes, we can provide samples of main products for trial before contracting.",
+                contact_title: "Contact Us",
+                contact_subtitle: "We are happy to receive your requests and inquiries.",
+                gm_label: "General Manager:",
+                gm_name: "Mr. Jamal El-Shimy",
+                address_label: "Address:",
+                address_val: "Madinah, Atbah Bin Bakr Bin Auf Al-Wabra Dist.",
+                form_title: "Send Your Inquiry",
+                form_name: "Name",
+                form_company: "Company / Hotel Name",
+                form_phone: "Mobile Number",
+                form_msg: "Message",
+                form_send: "Send via WhatsApp",
+                copyright: "Copyright © 2025 Hanaa Taibah Food Products. All rights reserved.",
+                order_via_whatsapp: "Order this Product",
+                alert_phone: "Please enter a valid mobile number",
+            }
+        };
+
+        // ==========================================
+        // 2. Data Logic
+        // ==========================================
+        const productsData = [
+            { 
+                nameAr: "الربع الأمامي (Forequarter)", nameEn: "Forequarter", 
+                descAr: "قطع عالية الجودة مثالية للطهي البطيء واليخنات.", descEn: "High quality cuts ideal for slow cooking and stews.",
+                category: "meat", brand: "all", img: "images/products/forequarter.jpg" 
+            },
+            { 
+                nameAr: "توب سايد (Topside)", nameEn: "Topside", 
+                descAr: "لحم وجه الفخذ، خالي من الدهون، يتميز بالطراوة المثالية.", descEn: "Lean meat from the inner leg, perfectly tender.",
+                category: "meat", brand: "all", img: "images/products/Topside.jpg" 
+            },
+            { 
+                nameAr: "فيليه (Tenderloin)", nameEn: "Tenderloin", 
+                descAr: "أرقى أنواع اللحوم وأكثرها طراوة، الخيار الأول للفنادق.", descEn: "The finest and most tender cut, #1 choice for hotels.",
+                category: "meat", brand: "all", img: "images/products/tm.jpg" 
+            },
+            { 
+                nameAr: "موزات / سينجارية (Shank)", nameEn: "Shank", 
+                descAr: "لحم الساق الغني بالنكهة.", descEn: "Flavor-rich leg meat.",
+                category: "meat", brand: "all", img: "images/products/senj.jpg" 
+            },
+            { 
+                nameAr: "مربى وعسل منارة", nameEn: "Manara Jams & Honey", 
+                descAr: "مربى وحشوات (فراولة، مشمش، تين، ورد) + عسل طبيعي.", descEn: "Jams & fillings (Strawberry, Apricot, Fig, Rose) + Natural Honey.",
+                category: "pantry", brand: "manara", img: "images/products/manara-jams.png", badge: "Manara" 
+            },
+            { 
+                nameAr: "صلصات إبريل (April)", nameEn: "April Sauces", 
+                descAr: "مايونيز (ليمون، ثوم، ترفل)، كاتشب، خردل، وصلصات الباربيكيو.", descEn: "Mayonnaise (Lemon, Garlic, Truffle), Ketchup, Mustard, BBQ Sauces.",
+                category: "pantry", brand: "april", img: "images/products/April-Sauces.jpg", badge: "April" 
+            },
+            { 
+                nameAr: "مستلزمات الطهي", nameEn: "Cooking Essentials", 
+                descAr: "خل، ماء ورد، زيت زيتون، شراب (Syrups)، وتتبيلات السلطة.", descEn: "Vinegar, Rose water, Olive oil, Syrups, Salad Dressings.",
+                category: "pantry", brand: "april", img: "images/products/cooking-essentials.webp", badge: "April / Queen Bee" 
+            },
+            { 
+                nameAr: "راما (Rama)", nameEn: "Rama", 
+                descAr: "كريمات الطهي والخفق، بدائل الزبدة والدهون النباتية.", descEn: "Cooking & Whipping creams, Butter alternatives & Vegetable fats.",
+                category: "dairy", brand: "rama", img: "images/products/Rama-Culinesse.webp", badge: "Rama", badgeColor: "bg-info text-dark" 
+            },
+            { 
+                nameAr: "حليب أنكور (Anchor)", nameEn: "Anchor Milk", 
+                descAr: "حليب مجفف عالي الجودة وسريع الذوبان.", descEn: "High quality instant milk powder.",
+                category: "dairy", brand: "anchor", img: "images/products/anchor.png", badge: "Anchor", badgeColor: "bg-primary", contain: true 
+            },
+            { 
+                nameAr: "حليب السهم (Arrow)", nameEn: "Arrow Milk", 
+                descAr: "حليب بودرة اقتصادي ومثالي للاستخدام التجاري.", descEn: "Economic milk powder, ideal for commercial use.",
+                category: "dairy", brand: "arrow", img: "images/products/Arrow.png", badge: "Arrow", badgeColor: "bg-primary" 
+            },
+            { 
+                nameAr: "رويال (Royal Herbs)", nameEn: "Royal Herbs", 
+                descAr: "تشكيلة أعشاب طبيعية: يانسون، نعناع، كركديه.", descEn: "Natural herbs selection: Anise, Mint, Hibiscus.",
+                category: "beverages", brand: "royal", img: "images/products/Royal-Classic-2048x1280.jpg.webp", badge: "Royal", badgeColor: "bg-success" 
+            },
+            { 
+                nameAr: "شاي مذاق", nameEn: "Mathaq Tea", 
+                descAr: "شاي أحمر فاخر ذو نكهة أصيلة.", descEn: "Premium red tea with authentic flavor.",
+                category: "beverages", brand: "mathaq", img: "images/products/mathaq-tea.png", badge: "Mathaq", badgeColor: "bg-danger" 
+            }
+        ];
+
+        let currentLang = localStorage.getItem('site_lang') || 'ar'; // Default Arabic
+        let currentTheme = localStorage.getItem('site_theme') || 'light'; // Default Light
+        let currentCategory = 'all';
+        let currentBrand = 'all';
+        let searchQuery = '';
+
+        // ==========================================
+        // 3. Functions
+        // ==========================================
+        
+        window.addEventListener('load', function() {
+            const preloader = document.getElementById('preloader');
+            preloader.style.opacity = '0';
+            setTimeout(() => { preloader.style.display = 'none'; }, 500);
+            
+            // Apply language and theme on load
+            applyTheme(currentTheme);
+            applyLanguage(currentLang);
+        });
+
+        AOS.init({ duration: 800, once: true, offset: 100 });
+
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('mainNav');
+            navbar.classList.toggle('scrolled', window.scrollY > 50);
+            
+            let mybutton = document.getElementById("scrollTopBtn");
+            mybutton.style.display = (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) ? "flex" : "none";
+        });
+
+        // --- Theme Logic ---
+        function toggleTheme() {
+            currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+            localStorage.setItem('site_theme', currentTheme);
+            applyTheme(currentTheme);
+        }
+
+        function applyTheme(theme) {
+            document.documentElement.setAttribute('data-bs-theme', theme);
+            const icon = document.getElementById('themeIcon');
+            if (theme === 'dark') {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+        }
+
+        // --- Language Logic ---
+        function toggleLanguage() {
+            currentLang = currentLang === 'ar' ? 'en' : 'ar';
+            localStorage.setItem('site_lang', currentLang);
+            applyLanguage(currentLang);
+        }
+
+        function applyLanguage(lang) {
+            const html = document.documentElement;
+            const bootstrapLink = document.getElementById('bootstrap-css');
+            const langText = document.getElementById('langText');
+
+            // 1. Update Direction, CSS & SEO Tags
+            if (lang === 'ar') {
+                html.setAttribute('dir', 'rtl');
+                html.setAttribute('lang', 'ar');
+                document.body.classList.remove('lang-en');
+                bootstrapLink.href = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css";
+                langText.innerText = "EN";
+                
+                // SEO Arabic
+                document.title = "هناء طيبة للمنتجات الغذائية | Hanaa Taibah";
+                document.querySelector('meta[name="description"]').setAttribute("content", "المورد الأول للمواد الغذائية واللحوم الفاخرة للفنادق والقطاعات الحكومية في المملكة العربية السعودية.");
+            } else {
+                html.setAttribute('dir', 'ltr');
+                html.setAttribute('lang', 'en');
+                document.body.classList.add('lang-en');
+                bootstrapLink.href = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css";
+                langText.innerText = "AR";
+                
+                // SEO English
+                document.title = "Hanaa Taibah | Food Products Supplier";
+                document.querySelector('meta[name="description"]').setAttribute("content", "Leading supplier of premium meats and food products for hotels and government sectors in Saudi Arabia.");
+            }
+
+            // 2. Update Static Text
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    el.innerText = translations[lang][key];
+                }
+            });
+
+            // 3. Update Input Placeholders
+            document.getElementById('searchInput').placeholder = translations[lang].search_placeholder;
+            document.getElementById('name').placeholder = lang === 'ar' ? "اسمك الكريم" : "Your Name";
+            document.getElementById('company').placeholder = lang === 'ar' ? "اسم المنشأة" : "Company Name";
+            document.getElementById('phone').placeholder = "05xxxxxxxx";
+
+            // 4. Re-render Products
+            applyFilters();
+        }
+
+        // --- Filter, Search & Product Rendering ---
+
+        document.getElementById('searchInput').addEventListener('keyup', function(e) {
+            searchQuery = e.target.value.toLowerCase();
+            applyFilters();
+        });
+
+        document.querySelectorAll('#categoryFilters .filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('#categoryFilters .filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentCategory = this.getAttribute('data-filter');
+                applyFilters();
+            });
+        });
+
+        document.querySelectorAll('#brandFilters .filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('#brandFilters .filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentBrand = this.getAttribute('data-filter');
+                applyFilters();
+            });
+        });
+
+        function applyFilters() {
+            const filtered = productsData.filter(product => {
+                const pName = currentLang === 'ar' ? product.nameAr : product.nameEn;
+                const pDesc = currentLang === 'ar' ? product.descAr : product.descEn;
+
+                const categoryMatch = (currentCategory === 'all') || (product.category === currentCategory);
+                const brandMatch = (currentBrand === 'all') || (product.brand === currentBrand);
+                const searchMatch = pName.toLowerCase().includes(searchQuery) || 
+                                    pDesc.toLowerCase().includes(searchQuery);
+                return categoryMatch && brandMatch && searchMatch;
+            });
+            renderProducts(filtered);
+        }
+
+        function renderProducts(products) {
+            const container = document.getElementById('productsContainer');
+            const emptyMsg = document.getElementById('noProductsMsg');
+            container.innerHTML = '';
+            
+            if (products.length === 0) {
+                emptyMsg.style.display = 'block';
+                return;
+            } else {
+                emptyMsg.style.display = 'none';
+            }
+
+            products.forEach(product => {
+                const originalIndex = productsData.indexOf(product);
+                
+                const imgClass = product.contain ? 'img-contain' : '';
+                const badgeHtml = product.badge ? `<span class="badge ${product.badgeColor || 'bg-secondary'} mb-2">${product.badge}</span>` : '';
+                
+                const name = currentLang === 'ar' ? product.nameAr : product.nameEn;
+                const desc = currentLang === 'ar' ? product.descAr : product.descEn;
+
+                const html = `
+                    <div class="col-md-6 col-lg-3" data-aos="fade-up">
+                        <div class="card h-100" onclick="openProductModal(${originalIndex})">
+                            <img src="${product.img}" loading="lazy" class="card-img-top ${imgClass}" alt="${name}">
+                            <div class="card-body">
+                                <h5 class="card-title text-success">${name}</h5>
+                                ${badgeHtml}
+                                <p class="card-text small text-muted">${desc}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += html;
+            });
+        }
+
+        // --- Product Modal Logic ---
+        function openProductModal(index) {
+            const product = productsData[index];
+            const name = currentLang === 'ar' ? product.nameAr : product.nameEn;
+            const desc = currentLang === 'ar' ? product.descAr : product.descEn;
+
+            document.getElementById('modalTitle').innerText = name;
+            document.getElementById('modalDesc').innerText = desc;
+            document.getElementById('modalImg').src = product.img;
+            
+            const badgeEl = document.getElementById('modalBadge');
+            if(product.badge) {
+                badgeEl.innerText = product.badge;
+                badgeEl.style.display = 'inline-block';
+            } else {
+                badgeEl.style.display = 'none';
+            }
+            
+            document.getElementById('modalWhatsappBtn').onclick = function() {
+                const msgAr = `السلام عليكم، أرغب بطلب المنتج: ${name}`;
+                const msgEn = `Hello, I would like to order: ${name}`;
+                const finalMsg = currentLang === 'ar' ? msgAr : msgEn;
+                window.open("https://wa.me/966549367133?text=" + finalMsg, '_blank', 'noopener,noreferrer');
+            };
+            
+            new bootstrap.Modal(document.getElementById('productModal')).show();
+        }
+
+        // --- Contact Form (Validation & Submit) ---
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            
+            var name = document.getElementById('name').value;
+            var company = document.getElementById('company').value;
+            var phone = document.getElementById('phone').value;
+            var message = document.getElementById('message').value;
+
+            // Form Validation (Phone number)
+            var phoneRegex = /^[0-9+\s-]{9,15}$/;
+            if (!phoneRegex.test(phone)) {
+                alert(translations[currentLang].alert_phone);
+                return;
+            }
+
+            var textAr = `السلام عليكم، استفسار جديد من الموقع:%0a👤 *الاسم:* ${name}%0a🏢 *الجهة:* ${company}%0a📱 *الجوال:* ${phone}%0a📝 *الرسالة:* ${message}`;
+            var textEn = `Hello, new inquiry from website:%0a👤 *Name:* ${name}%0a🏢 *Company:* ${company}%0a📱 *Mobile:* ${phone}%0a📝 *Message:* ${message}`;
+            
+            var finalMsg = currentLang === 'ar' ? textAr : textEn;
+
+            window.open("https://wa.me/966549367133?text=" + finalMsg, '_blank', 'noopener,noreferrer');
+        });
+
+        // Close mobile nav on click
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                var navbarCollapse = document.getElementById('navbarNav');
+                var bsCollapse = new bootstrap.Collapse(navbarCollapse, {toggle: false});
+                bsCollapse.hide();
+            });
+        });
+    </script>
+</body>
+</html>
