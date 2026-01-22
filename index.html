@@ -970,6 +970,29 @@
                 bsCollapse.hide();
             });
         });
+        // --- كود تفعيل القائمة تلقائياً عند التمرير (Scroll Spy) ---
+        window.addEventListener('scroll', () => {
+            let current = '';
+            // تحديد كل الأقسام في الصفحة (الهيدر + السكاشن)
+            const sections = document.querySelectorAll('section, header');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                // رقم 150 هو هامش لضبط التوقيت (لكي يتغير اللون قبل وصول القسم بالضبط بقليل)
+                if (window.scrollY >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                // إذا كان رابط القائمة يشير للقسم الحالي، نلونه بالأخضر
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
     </script>
 </body>
 </html>
